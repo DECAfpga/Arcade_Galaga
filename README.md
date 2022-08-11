@@ -6,6 +6,8 @@ DECA port for Galgaga by Somhic (07/11/21) adapted from DE10_lite port by Dar (h
 
 [Parts and Operating Manual](Galaga_-_1981_-_Namco.pdf)
 
+**For LCD version check deca_lcd folder.**
+
 **Features:**
 
 * **It does not require SDRAM.**
