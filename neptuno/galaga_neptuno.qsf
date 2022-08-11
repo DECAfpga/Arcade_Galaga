@@ -1,0 +1,232 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2017  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
+# Date created = 21:03:07  May 26, 2021
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		tld_test_placa_neptuno_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+# Project-Wide Assignments
+# ========================
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.1.0
+set_global_assignment -name LAST_QUARTUS_VERSION "17.1.0 Lite Edition"
+set_global_assignment -name TOP_LEVEL_ENTITY galaga_neptuno
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
+
+# Timing Assignments
+# ==================
+set_global_assignment -name IGNORE_CLOCK_SETTINGS ON
+set_global_assignment -name TPD_REQUIREMENT "5 ns"
+set_global_assignment -name TSU_REQUIREMENT "5 ns"
+set_global_assignment -name TCO_REQUIREMENT "5 ns"
+set_global_assignment -name TH_REQUIREMENT "5 ns"
+set_global_assignment -name FMAX_REQUIREMENT "101.58 MHz"
+
+# Analysis & Synthesis Assignments
+# ================================
+set_global_assignment -name DEVICE EP4CE55F23C8
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name REMOVE_REDUNDANT_LOGIC_CELLS ON
+set_global_assignment -name AUTO_IMPLEMENT_IN_ROM ON
+set_global_assignment -name FLEX10K_OPTIMIZATION_TECHNIQUE AREA
+set_global_assignment -name AUTO_RESOURCE_SHARING ON
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name FLEX10K_DEVICE_IO_STANDARD LVTTL/LVCMOS
+set_global_assignment -name CYCLONEIII_CONFIGURATION_SCHEME "PASSIVE SERIAL"
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name FORCE_CONFIGURATION_VCCIO ON
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_global_assignment -name RESERVE_DATA0_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_DATA1_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_FLASH_NCE_AFTER_CONFIGURATION "USE AS REGULAR IO"
+
+
+# Assembler Assignments
+# =====================
+
+set_global_assignment -name ON_CHIP_BITSTREAM_DECOMPRESSION OFF
+
+set_global_assignment -name GENERATE_RBF_FILE ON
+
+set_global_assignment -name ENABLE_DRC_SETTINGS OFF
+set_global_assignment -name ENABLE_CLOCK_LATENCY ON
+set_global_assignment -name ENABLE_RECOVERY_REMOVAL_ANALYSIS ON
+set_global_assignment -name IGNORE_LCELL_BUFFERS ON
+set_global_assignment -name ROUTER_TIMING_OPTIMIZATION_LEVEL MAXIMUM
+set_global_assignment -name OPTIMIZE_HOLD_TIMING "ALL PATHS"
+set_global_assignment -name FITTER_EFFORT "STANDARD FIT"
+set_global_assignment -name PLACEMENT_EFFORT_MULTIPLIER 4.0
+set_global_assignment -name ROUTER_EFFORT_MULTIPLIER 2.0
+set_global_assignment -name OPTIMIZE_TIMING "NORMAL COMPILATION"
+set_global_assignment -name FINAL_PLACEMENT_OPTIMIZATION ALWAYS
+set_global_assignment -name AUTO_GLOBAL_MEMORY_CONTROLS ON
+set_global_assignment -name ALLOW_ANY_RAM_SIZE_FOR_RECOGNITION OFF
+set_global_assignment -name ALLOW_ANY_ROM_SIZE_FOR_RECOGNITION OFF
+set_global_assignment -name ADD_PASS_THROUGH_LOGIC_TO_INFERRED_RAMS OFF
+set_global_assignment -name IGNORE_CARRY_BUFFERS OFF
+set_global_assignment -name IGNORE_CASCADE_BUFFERS OFF
+set_global_assignment -name AUTO_GLOBAL_CLOCK ON
+set_global_assignment -name AUTO_RAM_RECOGNITION ON
+set_global_assignment -name AUTO_SHIFT_REGISTER_RECOGNITION AUTO
+set_global_assignment -name STATE_MACHINE_PROCESSING AUTO
+set_global_assignment -name FMAX_REQUIREMENT "34 MHz" -section_id clk32
+set_global_assignment -name BLOCK_RAM_AND_MLAB_EQUIVALENT_PAUSED_READ_CAPABILITIES "DONT CARE"
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name DEVICE_FILTER_PACKAGE TQFP
+
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
+set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name OPTIMIZE_POWER_DURING_FITTING OFF
+set_global_assignment -name ADV_NETLIST_OPT_SYNTH_WYSIWYG_REMAP OFF
+set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT NORMAL
+set_global_assignment -name SEED 1
+set_global_assignment -name OPTIMIZE_POWER_DURING_SYNTHESIS "NORMAL COMPILATION"
+set_global_assignment -name PRE_MAPPING_RESYNTHESIS ON
+
+set_global_assignment -name OPTIMIZATION_MODE BALANCED
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE BALANCED
+
+
+
+
+###################################
+
+# clock
+set_location_assignment PIN_T2 -to max10_clk1_50
+
+# led
+set_location_assignment PIN_E4 -to ledr
+
+# key0 reset
+# set_location_assignment PIN_H21 -to key0
+
+# PS2 keyboard input  # Teclado (P9:11,12 GPIO1_D0/1) 
+set_location_assignment PIN_N19 -to ps2_clk
+set_location_assignment PIN_N20 -to ps2_dat
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ps2clk
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ps2dat
+
+# VGA video output
+set_location_assignment PIN_F1 -to VGA_R[5]
+set_location_assignment PIN_D2 -to VGA_R[4]
+set_location_assignment PIN_E1 -to VGA_R[3]
+set_location_assignment PIN_C2 -to VGA_R[2]
+set_location_assignment PIN_C1 -to VGA_R[1]
+set_location_assignment PIN_B1 -to VGA_R[0]
+set_location_assignment PIN_P2 -to VGA_G[5]
+set_location_assignment PIN_N2 -to VGA_G[4]
+set_location_assignment PIN_M2 -to VGA_G[3]
+set_location_assignment PIN_J2 -to VGA_G[2]
+set_location_assignment PIN_H2 -to VGA_G[1]
+set_location_assignment PIN_F2 -to VGA_G[0]
+set_location_assignment PIN_R1 -to VGA_B[5]
+set_location_assignment PIN_P1 -to VGA_B[4]
+set_location_assignment PIN_N1 -to VGA_B[3]
+set_location_assignment PIN_M1 -to VGA_B[2]
+set_location_assignment PIN_J1 -to VGA_B[1]
+set_location_assignment PIN_H1 -to VGA_B[0]
+set_location_assignment PIN_B3 -to VGA_HS
+set_location_assignment PIN_B2 -to VGA_VS
+
+
+# Audio pwm output (P8:5,6 GPIO0_D02/03)   #(Atlas board: T12_left 1, 2 gnd, 3 R11_right)
+set_location_assignment PIN_A3 -to pwm_audio_out_l
+set_location_assignment PIN_B4 -to pwm_audio_out_r
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to pwm_audio_out_l
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to pwm_audio_out_r
+
+
+
+#NEPTUNO JOYSTICKS#
+set_location_assignment PIN_AA18 -to JOYP7_O
+set_location_assignment PIN_A20 -to JOY_CLK
+set_location_assignment PIN_B19 -to JOY_DATA
+set_location_assignment PIN_B20 -to JOY_LOAD
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOY_DATA
+
+
+
+# FILES
+# ----------------------
+
+set_global_assignment -name SDC_FILE galaga_neptuno.sdc
+set_global_assignment -name VHDL_FILE galaga_neptuno.vhd
+
+set_global_assignment -name VHDL_FILE ../rtl_T80/T80se.vhd
+set_global_assignment -name VHDL_FILE ../rtl_T80/T80_Reg.vhd
+set_global_assignment -name VHDL_FILE ../rtl_T80/T80_Pack.vhd
+set_global_assignment -name VHDL_FILE ../rtl_T80/T80_MCode.vhd
+set_global_assignment -name VHDL_FILE ../rtl_T80/T80_ALU.vhd
+set_global_assignment -name VHDL_FILE ../rtl_T80/T80.vhd
+
+set_global_assignment -name VHDL_FILE ../rtl_dar/galaga.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/stars_machine.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/stars.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/sound_machine.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/max10_pll_18M_11M.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/kbd_joystick.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/io_ps2_keyboard.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/gen_video.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/gen_ram.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/galaga_video.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/mb88.vhd
+
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/galaga_cpu3.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/galaga_cpu2.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/galaga_cpu1.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/bg_graphx.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/sp_graphx.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/rgb.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/bg_palette.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/sp_palette.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/sound_seq.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/sound_samples.vhd
+set_global_assignment -name VHDL_FILE ../rtl_dar/proms/cs54xx_prog.vhd
+
+set_global_assignment -name VERILOG_FILE ../mist/scandoubler.v
+
+set_global_assignment -name VERILOG_FILE joydecoder.v
+
+
+###################################
+
+
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+
+
+
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
