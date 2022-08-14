@@ -54,9 +54,9 @@ Note: If keyboard is not working reset game with a press of KEY0 button
 
 ### Keyboard players inputs :
 
-F1 : Start 1 player
-F2 : Start 2 player
 F3 : Add coins
+F4 : Start 1 player
+F5 : Start 2 player
 SPACE       : Fire  
 RIGHT arrow : right
 LEFT  arrow : left

@@ -275,8 +275,8 @@ port map(
  b_test       => '1',
  b_svce       => '1', 
  coin         => fn_pulse(2), -- F3
- start1       => fn_pulse(0), -- F1
- start2       => fn_pulse(1), -- F2
+ start1       => fn_pulse(3), -- F1
+ start2       => fn_pulse(4), -- F2
 
  left1        => not left_i,   --joyPCFRLDU(2),
  right1       => not right_i,  --joyPCFRLDU(3),
