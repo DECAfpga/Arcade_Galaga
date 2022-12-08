@@ -60,8 +60,6 @@ F5 : Start 2 player
 SPACE       : Fire  
 RIGHT arrow : right
 LEFT  arrow : left
-UP    arrow : up 
-DOWN  arrow : down
 
 F8 : toggles VGA / RGB video mode
 
