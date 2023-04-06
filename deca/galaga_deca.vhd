@@ -293,7 +293,7 @@ vga_b_i <= b & b & b  when blankn = '1' else "000000";
 -- vga scandoubler
 scandoubler_inst :  scandoubler
   port map (
-    clk_sys => clock_18,     --clock_12 surt la meitat; video_clk i clock_36 no funciona
+    clk_sys => clock_12,     --clock_18, video_clk i clock_36 no funciona
     scanlines => "00",       --(00-none 01-25% 10-50% 11-75%)
     ce_x1 => clock_6,     
     ce_x2 => '1',
