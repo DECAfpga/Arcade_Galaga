@@ -521,8 +521,8 @@ bggraphx_addr <= 	'1' & bgtile_num_r(6 downto 0) & not hcnt(2) &     vcnt(2 down
 									'1' & bgtile_num_r(6 downto 0) &     hcnt(2) & not vcnt(2 downto 0);
 
 bgpalette_addr <= bgtile_color_r(5 downto 0) &
-									bggraphx_do(to_integer(unsigned('1' & (hcnt(1 downto 0)) xor (flip_h & flip_h)))) &
-									bggraphx_do(to_integer(unsigned('0' & (hcnt(1 downto 0)) xor (flip_h & flip_h)))); 
+									bggraphx_do(to_integer(unsigned('1' & ((hcnt(1 downto 0)) xor (flip_h & flip_h))))) &
+									bggraphx_do(to_integer(unsigned('0' & ((hcnt(1 downto 0)) xor (flip_h & flip_h))))); 
 
 bgbits <= bgpalette_do(3 downto 0);
 
