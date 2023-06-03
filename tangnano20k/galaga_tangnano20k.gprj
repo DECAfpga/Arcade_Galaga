@@ -1,0 +1,40 @@
+<?xml version="1" encoding="UTF-8"?>
+<!DOCTYPE gowin-fpga-project>
+<Project>
+    <Template>FPGA</Template>
+    <Version>5</Version>
+    <Device name="GW2AR-18C" pn="GW2AR-LV18QN88C8/I7">gw2ar18c-000</Device>
+    <FileList>
+        <File path="src/galaga_tangnano20k.vhd" type="file.vhdl" enable="1"/>
+        <File path="src/galaga_tangnano20k.cst" type="file.cst" enable="1"/>
+        <File path="src/gowin_rpll/gowin_rpll.v" type="file.verilog" enable="1"/>
+        <File path="../mist/scandoubler.v" type="file.verilog" enable="1"/>
+        <File path="../rtl_T80/T80.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_T80/T80_ALU.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_T80/T80_MCode.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_T80/T80_Pack.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_T80/T80_Reg.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_T80/T80se.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/galaga.vhd" type="file.vhdl" enable="1"/>
+        <!-- <File path="../rtl_dar/galaga_video.vhd" type="file.vhdl" enable="1"/> -->
+        <File path="../rtl_dar/gen_ram.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/gen_video.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/io_ps2_keyboard.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/kbd_joystick.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/mb88.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/bg_graphx.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/bg_palette.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/cs54xx_prog.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/galaga_cpu1.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/galaga_cpu2.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/galaga_cpu3.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/rgb.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/sound_samples.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/sound_seq.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/sp_graphx.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/proms/sp_palette.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/sound_machine.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/stars.vhd" type="file.vhdl" enable="1"/>
+        <File path="../rtl_dar/stars_machine.vhd" type="file.vhdl" enable="1"/>
+    </FileList>
+</Project>
