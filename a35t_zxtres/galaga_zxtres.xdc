@@ -82,6 +82,8 @@ set_property PACKAGE_PIN U2 [get_ports joy_load_n]
 set_property IOSTANDARD LVCMOS33 [get_ports joy_load_n]
 set_property PACKAGE_PIN W2 [get_ports joy_data]
 set_property IOSTANDARD LVCMOS33 [get_ports joy_data]
+set_property PACKAGE_PIN G1 [get_ports joy_select]
+set_property IOSTANDARD LVCMOS33 [get_ports joy_select]
 
 #SRAM
 set_property PACKAGE_PIN U18 [get_ports {sram_addr[0]}]

@@ -69,7 +69,8 @@ port(
 -- JOYSTICK
 joy_load_n    : out std_logic;
 joy_clk       : out std_logic;
-joy_data      : in  std_logic
+joy_data      : in  std_logic;
+joy_select    : out std_logic
 
 );
 end galaga_zxtres;
@@ -199,9 +200,23 @@ component joydecoder
   );
 end component;
 
-signal JOY1_B1_P6		:   STD_LOGIC;
-signal JOY1_LEFT	  :   STD_LOGIC;
-signal JOY1_RIGHT		:   STD_LOGIC;
+-- JOYSTICKS
+signal joy1up      : std_logic := '1';
+signal joy1down    : std_logic := '1';
+signal joy1left    : std_logic := '1';
+signal joy1right   : std_logic := '1';
+signal joy1fire1   : std_logic := '1';
+signal joy1fire2   : std_logic := '1';
+signal joy1fire3   : std_logic := '1';
+signal joy1start   : std_logic := '1';
+signal joy2up      : std_logic := '1';
+signal joy2down    : std_logic := '1';
+signal joy2left    : std_logic := '1';
+signal joy2right   : std_logic := '1';
+signal joy2fire1   : std_logic := '1';
+signal joy2fire2   : std_logic := '1';
+signal joy2fire3   : std_logic := '1';
+signal joy2start   : std_logic := '1';
 
 begin
 
@@ -310,7 +325,7 @@ scandoubler_inst :  scandoubler
 
 
 -- RGB
--- adapt video to 4bits/color only and blank
+-- adapt video to 6 bits/color only and blank
 vga_r_c <= vga_r_i;
 vga_g_c <= vga_g_i;
 vga_b_c <= vga_b_i;
@@ -336,7 +351,7 @@ begin
         vga_vs <= vga_vs_c; 
 			else
         --VGA
-        -- adapt video to 4 bits/color only
+        -- adapt video to 6 bits/color only
         vga_r  <= vga_r_o;
         vga_g  <= vga_g_o;
         vga_b  <= vga_b_o;
@@ -387,31 +402,31 @@ port map (
   joy_data   => joy_data,
   joy_clk    => joy_clk,
   joy_load_n => joy_load_n,
-  -- joy1up   => joy1up,
-  -- joy1down => joy1down,
-  joy1left   => JOY1_LEFT,
-  joy1right  => JOY1_RIGHT,
-  joy1fire1  => JOY1_B1_P6
-  -- joy1fire2  => joy1fire2,
-  -- joy1fire3  => joy1fire3,
-  -- joy1start  => joy1start,
-  -- joy2up     => joy2up,
-  -- joy2down   => joy2down,
-  -- joy2left   => joy2left,
-  -- joy2right  => joy2right,
-  -- joy2fire1  => joy2fire1,
-  -- joy2fire2  => joy2fire2,
-  -- joy2fire3  => joy2fire3,
-  -- joy2start  => joy2star
+  joy1up   => joy1up,
+  joy1down => joy1down,
+  joy1left   => joy1left,
+  joy1right  => joy1right,
+  joy1fire1  => joy1fire1,
+  joy1fire2  => joy1fire2,
+  joy1fire3  => joy1fire3,
+  joy1start  => joy1start,
+  joy2up     => joy2up,
+  joy2down   => joy2down,
+  joy2left   => joy2left,
+  joy2right  => joy2right,
+  joy2fire1  => joy2fire1,
+  joy2fire2  => joy2fire2,
+  joy2fire3  => joy2fire3,
+  joy2start  => joy2start
 );
 
 
 --Sega megadrive gamepad
---JOYX_SEL_O <= '1';  --not needed. core uses 1 button only
+joy_select <= '1';  --not needed. core uses 1 button only
 
-left_i   <= not joyPCFRLDU(2) and JOY1_LEFT;  -- left
-right_i  <= not joyPCFRLDU(3) and JOY1_RIGHT; -- right
-fire_i   <= not joyPCFRLDU(4) and JOY1_B1_P6; -- space
+left_i   <= not joyPCFRLDU(2) and joy1left;  -- left
+right_i  <= not joyPCFRLDU(3) and joy1right; -- right
+fire_i   <= not joyPCFRLDU(4) and joy1fire1; -- space
 
 -- pwm sound output
 process(clock_18)

@@ -121,7 +121,7 @@ reg [COLOR_DEPTH*3-1:0] sd_out;
 // ==================================================================
 
 // 2 lines of 2**HCNT_WIDTH pixels 3*COLOR_DEPTH bit RGB
-(* ramstyle = "no_rw_check" *) reg [COLOR_DEPTH*3-1:0] sd_buffer[2*2**HCNT_WIDTH];
+(* ramstyle = "no_rw_check" *) reg [COLOR_DEPTH*3-1:0] sd_buffer[2*2**HCNT_WIDTH:2*2**HCNT_WIDTH];
 
 // use alternating sd_buffers when storing/reading data   
 reg        line_toggle;
@@ -131,7 +131,7 @@ reg  [HCNT_WIDTH-1:0] hs_max;
 reg  [HCNT_WIDTH-1:0] hs_rise;
 reg  [HCNT_WIDTH-1:0] hcnt;
 
-always @(posedge clk_sys) begin
+always @(posedge clk_sys) begin :aaa1
 	reg hsD, vsD;
 
 	if(ce_x1) begin
@@ -166,7 +166,7 @@ reg  [HCNT_WIDTH-1:0] sd_hcnt;
 reg        hs_sd;
 
 // timing generation runs 32 MHz (twice the input signal analysis speed)
-always @(posedge clk_sys) begin
+always @(posedge clk_sys) begin	:aaa2
 	reg hsD;
 
 	if(ce_x2) begin
