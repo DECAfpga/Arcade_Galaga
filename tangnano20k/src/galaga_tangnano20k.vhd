@@ -97,7 +97,7 @@ architecture struct of galaga_tangnano20k is
 
  signal clock_36  : std_logic;  --mod by somhic
  signal clock_6   : std_logic;  --mod by somhic
- signal clock_12   : std_logic;  --mod by somhic
+ signal clock_12  : std_logic;  --mod by somhic
 
  signal clock_18  : std_logic;
  signal clock_18n : std_logic;
@@ -121,8 +121,8 @@ architecture struct of galaga_tangnano20k is
  signal kbd_intr      : std_logic;
  signal kbd_scancode  : std_logic_vector(7 downto 0);
  signal joyPCFRLDU    : std_logic_vector(8 downto 0);
- signal fn_pulse       : std_logic_vector(7 downto 0);
- signal fn_toggle      : std_logic_vector(7 downto 0);
+ signal fn_pulse      : std_logic_vector(7 downto 0);
+ signal fn_toggle     : std_logic_vector(7 downto 0);
 
 -- video signals   -- mod by somhic
 --  signal vga_r          : std_logic_vector(1 downto 0);
@@ -309,9 +309,9 @@ begin
 			else
         --VGA
         -- adapt video to 2 bits/color only
-        vga_r  <= vga_r_o (5 downto 4);
-        vga_g  <= vga_g_o (5 downto 4);
-        vga_b  <= vga_b_o (5 downto 4);
+        vga_r  <= vga_r_o (4 downto 3);     -- (5 downto 4) outputs black screen !! why ??
+        vga_g  <= vga_g_o (4 downto 3);
+        vga_b  <= vga_b_o (4 downto 3);
         vga_hs <= hsync_o;       
         vga_vs <= vsync_o; 	    	
 			end if;
@@ -409,6 +409,43 @@ pwm_audio_out_r <= pwm_accumulator(12);
 -- HDMI_SCLK <= I2S_SCLK;    --  894,7 kHz  = lr*2*16   -no- 448 kHz 
 -- HDMI_LRCLK <= I2S_LRCLK;   -- 27,96 kHz              -no-  14 kHz  music with noise
 -- HDMI_I2S(0) <= tx_data;
+
+
+
+
+-- -- HDMI output.
+-- logic[2:0] tmds;
+
+-- hdmi #( .VIDEO_ID_CODE(VIDEOID), 
+--         .DVI_OUTPUT(0), 
+--         .VIDEO_REFRESH_RATE(VIDEO_REFRESH),
+--         .IT_CONTENT(1),
+--         .AUDIO_RATE(AUDIO_RATE), 
+--         .AUDIO_BIT_WIDTH(AUDIO_BIT_WIDTH),
+--         .START_X(0),
+--         .START_Y(0) )
+
+-- hdmi( .clk_pixel_x5(clk_5x_pixel), 
+--       .clk_pixel(clk_pixel), 
+--       .clk_audio(clk_audio),
+--       .rgb(rgb), 
+--       .reset( ~resetn ),
+--       .audio_sample_word(audio_sample_word),
+--       .tmds(tmds), 
+--       .tmds_clock(tmdsClk), 
+--       .cx(cx), 
+--       .cy(cy),
+--       .frame_width( frameWidth ),
+--       .frame_height( frameHeight ) );
+
+-- // Gowin LVDS output buffer
+-- ELVDS_OBUF tmds_bufds [3:0] (
+--     .I({clk_pixel, tmds}),
+--     .O({tmds_clk_p, tmds_d_p}),
+--     .OB({tmds_clk_n, tmds_d_n})
+-- );
+
+
 
 
 -- I2S interface audio
