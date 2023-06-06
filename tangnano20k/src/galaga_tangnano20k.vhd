@@ -62,10 +62,10 @@ port(
    vga_vs         : out std_logic;
 
   -- HDMI TX
-  -- tmds_clk_n      : OUT std_logic;
-  -- tmds_clk_p      : OUT std_logic;
-  -- tmds_d_n        : OUT std_logic_vector(2 downto 0);
-  -- tmds_d_p        : OUT std_logic_vector(2 downto 0); 
+  tmds_clk_n      : OUT std_logic;
+  tmds_clk_p      : OUT std_logic;
+  tmds_d_n        : OUT std_logic_vector(2 downto 0);
+  tmds_d_p        : OUT std_logic_vector(2 downto 0); 
 
   -- KEYBOARD
   ps2_clk         : in std_logic;
@@ -149,6 +149,25 @@ architecture struct of galaga_tangnano20k is
  signal vga_hs_c        : std_logic;
  signal vga_vs_c        : std_logic;
 
+signal  tmds            : std_logic_vector(2 downto 0);
+signal  rgb             : std_logic_vector(23 downto 0);
+signal clk_p5           : std_logic;
+signal clk_p            : std_logic;
+signal pll_lock         : std_logic;
+signal resetn_clkdiv    : std_logic;
+
+-- signal  tmds_buf_i      : std_logic_vector(3 downto 0);
+-- signal  tmds_buf_o      : std_logic_vector(3 downto 0);
+-- signal  tmds_buf_ob     : std_logic_vector(3 downto 0);
+
+-- COMPONENT ELVDS_OBUF
+--   PORT (
+--     O :OUT std_logic;
+--     OB:OUT std_logic;
+--     I :IN std_logic
+--   );
+-- END COMPONENT;
+
 -- joy signals
  signal left_i          : std_logic; 
  signal right_i         : std_logic; 
@@ -165,6 +184,8 @@ architecture struct of galaga_tangnano20k is
   signal audio_out        : std_logic := '0';
   signal audio_bit_cnt    : integer range 0 to 31 := 0;
 
+  type t_sample is array (0 to 1) of std_logic_vector(15 downto 0);
+  signal audio_sample_word : t_sample;
 
   component scandoubler        -- mod by somhic
     port (
@@ -196,11 +217,22 @@ clock_18n <= not clock_18;
 --start <= not key(1);
 -- tv15Khz_mode <= sw();
 
--- clk_11_18 : entity work.Gowin_rPLL
--- port map(
---   clkin => SYS_CLK,
---   clkout => clock_36
--- );
+clk_11_18 : entity work.Gowin_rPLL
+port map(
+  clkin  => SYS_CLK,
+  clkout => clk_p5,
+  lock   => pll_lock
+
+);
+
+clk_div : entity work.Gowin_CLKDIV  
+port map(
+  clkout => (clk_p),
+  hclkin => (clk_p5),
+  resetn => resetn_clkdiv
+);
+
+resetn_clkdiv <= (not reset) and pll_lock;
 
 clock_36 <= SYS_CLK;    -- with 5351 exact clock set to pll_clk O1=36200K -s
 
@@ -318,7 +350,7 @@ begin
 		end if;
 end process;
 
--- HDMI TO VGA OUTPUT
+-- HDMI TO VGA OUTPUT   -- not working
 -- tmds_clk_n  <= vga_hs;
 -- tmds_clk_p  <= vga_vs;
 -- tmds_d_n(0) <= vga_b(0);
@@ -412,40 +444,66 @@ pwm_audio_out_r <= pwm_accumulator(12);
 
 
 
+-- HDMI output.
+hdmi_inst : entity work.hdmi
+  generic map (
+    VIDEO_ID_CODE => 1,
+    IT_CONTENT => 1,
+    DVI_OUTPUT => 1,
+    -- VIDEO_REFRESH_RATE => 59.94,
+    AUDIO_RATE => 48000,
+    -- AUDIO_BIT_WIDTH => 16,
+    START_X => 0,
+    START_Y => 0
+  )
+  port map (
+    clk_pixel_x5 => clk_p5,   -- clk_pixel_x5
+    clk_pixel => clk_p,       -- clock_12
+    clk_audio => clock_18,
+    reset => reset,
+    rgb => rgb,
+    audio_sample_word => audio_sample_word,
+    tmds => tmds
+    -- tmds_clock => tmds_clock,
+    -- cx => cx,
+    -- cy => cy,
+    -- frame_width => frame_width,
+    -- frame_height => frame_height
+  );
 
--- -- HDMI output.
--- logic[2:0] tmds;
+audio_sample_word(0) <= "000" & audio & "000";
+audio_sample_word(0) <= "000" & audio & "000";
 
--- hdmi #( .VIDEO_ID_CODE(VIDEOID), 
---         .DVI_OUTPUT(0), 
---         .VIDEO_REFRESH_RATE(VIDEO_REFRESH),
---         .IT_CONTENT(1),
---         .AUDIO_RATE(AUDIO_RATE), 
---         .AUDIO_BIT_WIDTH(AUDIO_BIT_WIDTH),
---         .START_X(0),
---         .START_Y(0) )
+rgb <= vga_r_i&vga_r_i(5 downto 4)&vga_g_i&vga_g_i(5 downto 4)&vga_b_i&vga_b_i(5 downto 4);
 
--- hdmi( .clk_pixel_x5(clk_5x_pixel), 
---       .clk_pixel(clk_pixel), 
---       .clk_audio(clk_audio),
---       .rgb(rgb), 
---       .reset( ~resetn ),
---       .audio_sample_word(audio_sample_word),
---       .tmds(tmds), 
---       .tmds_clock(tmdsClk), 
---       .cx(cx), 
---       .cy(cy),
---       .frame_width( frameWidth ),
---       .frame_height( frameHeight ) );
+-- Gowin LVDS output buffer
+tmds_bufds_0 : entity work.ELVDS_OBUF 
+port map (
+    I   => (clk_p     ),
+    O   => (tmds_clk_p),
+    OB  => (tmds_clk_n)
+);
 
--- // Gowin LVDS output buffer
--- ELVDS_OBUF tmds_bufds [3:0] (
---     .I({clk_pixel, tmds}),
---     .O({tmds_clk_p, tmds_d_p}),
---     .OB({tmds_clk_n, tmds_d_n})
--- );
+tmds_bufds_1 : entity work.ELVDS_OBUF 
+port map (
+    I   => (tmds(2)    ),
+    O   => (tmds_d_p(2)),
+    OB  => (tmds_d_n(2))
+);
 
+tmds_bufds_2 : entity work.ELVDS_OBUF 
+port map (
+    I   => (tmds(1)    ),
+    O   => (tmds_d_p(1)),
+    OB  => (tmds_d_n(1))
+);
 
+tmds_bufds_3 : entity work.ELVDS_OBUF 
+port map (
+    I   => (tmds(0)    ),
+    O   => (tmds_d_p(0)),
+    OB  => (tmds_d_n(0))
+);
 
 
 -- I2S interface audio

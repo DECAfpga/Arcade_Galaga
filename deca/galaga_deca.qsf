@@ -279,7 +279,7 @@ set_global_assignment -name VHDL_FILE ../rtl_dar/kbd_joystick.vhd
 set_global_assignment -name VHDL_FILE ../rtl_dar/io_ps2_keyboard.vhd
 set_global_assignment -name VHDL_FILE ../rtl_dar/gen_video.vhd
 set_global_assignment -name VHDL_FILE ../rtl_dar/gen_ram.vhd
-set_global_assignment -name VHDL_FILE ../rtl_dar/galaga_video.vhd
+#set_global_assignment -name VHDL_FILE ../rtl_dar/galaga_video.vhd
 set_global_assignment -name VHDL_FILE ../rtl_dar/mb88.vhd
 
 set_global_assignment -name VHDL_FILE ../rtl_dar/proms/galaga_cpu3.vhd
