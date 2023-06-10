@@ -55,9 +55,9 @@ port(
   SW1           : in std_logic;
 
   -- VGA
-   vga_r          : out std_logic_vector(1 downto 0);
-   vga_g          : out std_logic_vector(1 downto 0);
-   vga_b          : out std_logic_vector(1 downto 0);
+   vga_r          : out std_logic_vector(2 downto 0);
+   vga_g          : out std_logic_vector(2 downto 0);
+   vga_b          : out std_logic_vector(2 downto 0);
    vga_hs         : out std_logic;
    vga_vs         : out std_logic;
 
@@ -124,13 +124,6 @@ architecture struct of galaga_tangnano20k is
  signal fn_pulse      : std_logic_vector(7 downto 0);
  signal fn_toggle     : std_logic_vector(7 downto 0);
 
--- video signals   -- mod by somhic
---  signal vga_r          : std_logic_vector(1 downto 0);
---  signal vga_g          : std_logic_vector(1 downto 0);
---  signal vga_b          : std_logic_vector(1 downto 0);
---  signal vga_hs         : std_logic;
---  signal vga_vs         : std_logic;
-
  --signal clock_vga       : std_logic;   
  signal video_clk       : std_logic;   
  signal vga_g_i         : std_logic_vector(5 downto 0);   
@@ -143,14 +136,14 @@ architecture struct of galaga_tangnano20k is
  signal vsync_o         : std_logic;   
  signal blankn_o        : std_logic;
 
- signal vga_r_c         : std_logic_vector(1 downto 0);
- signal vga_g_c         : std_logic_vector(1 downto 0);
- signal vga_b_c         : std_logic_vector(1 downto 0);
+ signal vga_r_c         : std_logic_vector(2 downto 0);
+ signal vga_g_c         : std_logic_vector(2 downto 0);
+ signal vga_b_c         : std_logic_vector(2 downto 0);
  signal vga_hs_c        : std_logic;
  signal vga_vs_c        : std_logic;
 
-signal  tmds            : std_logic_vector(2 downto 0);
-signal  rgb             : std_logic_vector(23 downto 0);
+signal tmds            : std_logic_vector(2 downto 0);
+signal rgb             : std_logic_vector(23 downto 0);
 signal clk_p5           : std_logic;
 signal clk_p            : std_logic;
 signal pll_lock         : std_logic;
@@ -315,9 +308,9 @@ scandoubler_inst :  scandoubler
 
 -- RGB
 -- adapt video to 2 bits/color only and blank
-vga_r_c <= r(2 downto 1)      when blankn = '1' else "00";
-vga_g_c <= g(2 downto 1)      when blankn = '1' else "00";
-vga_b_c <= b                  when blankn = '1' else "00";
+vga_r_c <= r        when blankn = '1' else "000";
+vga_g_c <= g        when blankn = '1' else "000";
+vga_b_c <= b & b(1) when blankn = '1' else "000";
 -- synchro composite/ synchro horizontale
 vga_hs_c <= csync;
 -- vga_hs <= csync when tv15Khz_mode = '1' else hsync;
@@ -341,9 +334,9 @@ begin
 			else
         --VGA
         -- adapt video to 2 bits/color only
-        vga_r  <= vga_r_o (4 downto 3);     -- (5 downto 4) outputs black screen !! why ??
-        vga_g  <= vga_g_o (4 downto 3);
-        vga_b  <= vga_b_o (4 downto 3);
+        vga_r  <= vga_r_o (5 downto 3);     -- (5 downto 4) outputs black screen !! why ??
+        vga_g  <= vga_g_o (5 downto 3);
+        vga_b  <= vga_b_o (5 downto 3);
         vga_hs <= hsync_o;       
         vga_vs <= vsync_o; 	    	
 			end if;
