@@ -5,7 +5,7 @@
 //Part Number: GW2AR-LV18QN88C8/I7
 //Device: GW2AR-18
 //Device Version: C
-//Created Time: Tue Jun  6 21:58:13 2023
+//Created Time: Sat Jun 10 11:39:41 2023
 
 module Gowin_rPLL (clkout, lock, clkin);
 
@@ -38,13 +38,13 @@ rPLL rpll_inst (
     .FDLY({gw_gnd,gw_gnd,gw_gnd,gw_gnd})
 );
 
-defparam rpll_inst.FCLKIN = "27";
+defparam rpll_inst.FCLKIN = "36.2";
 defparam rpll_inst.DYN_IDIV_SEL = "false";
-defparam rpll_inst.IDIV_SEL = 8;
+defparam rpll_inst.IDIV_SEL = 0;
 defparam rpll_inst.DYN_FBDIV_SEL = "false";
-defparam rpll_inst.FBDIV_SEL = 9;
+defparam rpll_inst.FBDIV_SEL = 0;
 defparam rpll_inst.DYN_ODIV_SEL = "false";
-defparam rpll_inst.ODIV_SEL = 32;
+defparam rpll_inst.ODIV_SEL = 16;
 defparam rpll_inst.PSDA_SEL = "0000";
 defparam rpll_inst.DYN_DA_EN = "true";
 defparam rpll_inst.DUTYDA_SEL = "1000";
@@ -53,7 +53,7 @@ defparam rpll_inst.CLKOUTP_FT_DIR = 1'b1;
 defparam rpll_inst.CLKOUT_DLY_STEP = 0;
 defparam rpll_inst.CLKOUTP_DLY_STEP = 0;
 defparam rpll_inst.CLKFB_SEL = "internal";
-defparam rpll_inst.CLKOUT_BYPASS = "false";
+defparam rpll_inst.CLKOUT_BYPASS = "true";
 defparam rpll_inst.CLKOUTP_BYPASS = "false";
 defparam rpll_inst.CLKOUTD_BYPASS = "false";
 defparam rpll_inst.DYN_SDIV_SEL = 2;

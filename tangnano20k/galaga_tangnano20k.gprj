@@ -46,5 +46,6 @@
         <File path="../rtl_dar/stars_machine.vhd" type="file.vhdl" enable="1"/>
         <File path="src/galaga_tangnano20k.vhd" type="file.vhdl" enable="1"/>
         <File path="src/galaga_tangnano20k.cst" type="file.cst" enable="1"/>
+        <File path="src/dualshock_controller.v" type="file.verilog" enable="1"/>
     </FileList>
 </Project>

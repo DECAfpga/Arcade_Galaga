@@ -3,8 +3,9 @@
 # IO_PORT "SYS_CLK" PULL_MODE=UP IO_TYPE=LVCMOS33;
 # IO_LOC "SYS_CLK" 10;          // PIN10_5351CKP CLK0  50 MHz
 # IO_PORT "SYS_CLK" PULL_MODE=UP IO_TYPE=LVCMOS33;
+
 # 5351 exact clock set to pll_clk O1=36200K -s
-IO_LOC "SYS_CLK" 11;       // PIN11_5351CKN CLK1 36.2 MHz
+IO_LOC "SYS_CLK" 11;            // PIN11_5351CKN CLK1 36.2 MHz
 IO_PORT "SYS_CLK" PULL_MODE=UP IO_TYPE=LVCMOS33;
 # IO_LOC "SYS_CLK" 13;          // PIN13_5351CKP CLK2  x MHz
 # IO_PORT "SYS_CLK" PULL_MODE=UP IO_TYPE=LVCMOS33;
@@ -70,6 +71,16 @@ IO_PORT "ps2_clk" PULL_MODE=UP IO_TYPE=LVCMOS33;
 IO_LOC "ps2_dat" 74;
 IO_PORT "ps2_dat" PULL_MODE=UP IO_TYPE=LVCMOS33;
 
+// Joystick 2
+IO_LOC "joystick_clk2" 52;
+IO_PORT "joystick_clk2" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+IO_LOC "joystick_mosi2" 53;
+IO_PORT "joystick_mosi2" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+IO_LOC "joystick_miso2" 71;
+IO_PORT "joystick_miso2" PULL_MODE=UP IO_TYPE=LVCMOS33;
+IO_LOC "joystick_cs2"  72;
+IO_PORT "joystick_cs2" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+
 
 # // SDCard
 # IO_LOC "sd_clk" 83;
@@ -94,16 +105,6 @@ IO_PORT "ps2_dat" PULL_MODE=UP IO_TYPE=LVCMOS33;
 # IO_PORT "joystick_miso" PULL_MODE=UP IO_TYPE=LVCMOS33;
 # IO_LOC "joystick_cs"  18;
 # IO_PORT "joystick_cs" PULL_MODE=NONE IO_TYPE=LVCMOS33;
-
-# // Joystick 2
-# IO_LOC "joystick_clk2" 52;
-# IO_PORT "joystick_clk2" PULL_MODE=NONE IO_TYPE=LVCMOS33;
-# IO_LOC "joystick_mosi2" 53;
-# IO_PORT "joystick_mosi2" PULL_MODE=NONE IO_TYPE=LVCMOS33;
-# IO_LOC "joystick_miso2" 71;
-# IO_PORT "joystick_miso2" PULL_MODE=UP IO_TYPE=LVCMOS33;
-# IO_LOC "joystick_cs2"  72;
-# IO_PORT "joystick_cs2" PULL_MODE=NONE IO_TYPE=LVCMOS33;
 
 # // UART through USB-TTL dongle
 # IO_LOC "UART_TXD" 30;

@@ -50,9 +50,9 @@ library work;
 
 entity galaga_tangnano20k is
 port(
-  SYS_CLK  : in std_logic;
+  SYS_CLK         : in std_logic;
 
-  SW1           : in std_logic;
+  SW1             : in std_logic;
 
   -- VGA
    vga_r          : out std_logic_vector(2 downto 0);
@@ -62,10 +62,10 @@ port(
    vga_vs         : out std_logic;
 
   -- HDMI TX
-  tmds_clk_n      : OUT std_logic;
-  tmds_clk_p      : OUT std_logic;
-  tmds_d_n        : OUT std_logic_vector(2 downto 0);
-  tmds_d_p        : OUT std_logic_vector(2 downto 0); 
+  tmds_clk_n      : out std_logic;
+  tmds_clk_p      : out std_logic;
+  tmds_d_n        : out std_logic_vector(2 downto 0);
+  tmds_d_p        : out std_logic_vector(2 downto 0); 
 
   -- KEYBOARD
   ps2_clk         : in std_logic;
@@ -74,6 +74,12 @@ port(
   -- AUDIO
   pwm_audio_out_l : out std_logic;
   pwm_audio_out_r : out std_logic;
+
+  -- Dualshock game controller
+  joystick_clk2   : out std_logic;
+  joystick_mosi2  : out std_logic;
+  joystick_miso2  : in  std_logic;
+  joystick_cs2    : out std_logic;
 
   -- JOYSTICK
   JOY1_B2_P9		: IN    STD_LOGIC;
