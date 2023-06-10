@@ -106,7 +106,6 @@ architecture struct of galaga_tangnano20k is
  signal clock_12  : std_logic;  --mod by somhic
 
  signal clock_18  : std_logic;
- signal clock_18n : std_logic;
  signal clock_11  : std_logic;
  signal clock_9   : std_logic;
  signal reset     : std_logic;
@@ -211,25 +210,25 @@ begin
 
 -- reset <= not reset_n;
 reset <= SW1;
-clock_18n <= not clock_18;
 
 --start <= not key(1);
 -- tv15Khz_mode <= sw();
 
-clk_11_18 : entity work.Gowin_rPLL
-port map(
-  clkin  => SYS_CLK,
-  clkout => clk_p5,
-  lock   => pll_lock
+-- clk_11_18 : entity work.Gowin_rPLL
+-- port map(
+--   clkin  => SYS_CLK,
+--   clkout => clk_p5,
+--   lock   => pll_lock
+-- );
 
-);
+-- clk_p5   <= clock_36;   
 
-clk_div : entity work.Gowin_CLKDIV  
-port map(
-  clkout => (clk_p),
-  hclkin => (clk_p5),
-  resetn => resetn_clkdiv
-);
+-- clk_div : entity work.Gowin_CLKDIV  
+-- port map(
+--   clkout => (clk_p),
+--   hclkin => (clk_p5),
+--   resetn => resetn_clkdiv
+-- );
 
 resetn_clkdiv <= (not reset) and pll_lock;
 
@@ -349,16 +348,6 @@ begin
 		end if;
 end process;
 
--- HDMI TO VGA OUTPUT   -- not working
--- tmds_clk_n  <= vga_hs;
--- tmds_clk_p  <= vga_vs;
--- tmds_d_n(0) <= vga_b(0);
--- tmds_d_p(0) <= vga_b(1);
--- tmds_d_n(1) <= vga_g(0);
--- tmds_d_p(1) <= vga_g(1);
--- tmds_d_n(2) <= vga_r(0);
--- tmds_d_p(2) <= vga_r(1);
-
 
 -- get scancode from keyboard
 process (reset, clock_18)
@@ -393,6 +382,19 @@ port map (
   fn_toggle     => fn_toggle
 );
 
+
+
+-- dualshock_controller controller2 (
+--     .I_CLK250K(sclk), .I_RSTn(1'b1),
+--     .O_psCLK(joystick_clk2), .O_psSEL(joystick_cs2), .O_psTXD(joystick_mosi2),
+--     .I_psRXD(joystick_miso2),
+--     .O_RXD_1(joy_rx2[0]), .O_RXD_2(joy_rx2[1]), 
+--     .O_RXD_3(), .O_RXD_4(), .O_RXD_5(), .O_RXD_6(),
+--     .I_CONF_SW(1'b0), .I_MODE_SW(1'b1), .I_MODE_EN(1'b0),
+--     .I_VIB_SW(2'b00), .I_VIB_DAT(8'hff)     // no vibration
+-- );
+
+
 --Sega megadrive gamepad
 JOYX_SEL_O <= '1';  --not needed. core uses 1 button only
 
@@ -410,6 +412,17 @@ end process;
 
 pwm_audio_out_l <= pwm_accumulator(12);
 pwm_audio_out_r <= pwm_accumulator(12); 
+
+
+-- HDMI TO VGA OUTPUT   -- not working
+-- tmds_clk_n  <= vga_hs;
+-- tmds_clk_p  <= vga_vs;
+-- tmds_d_n(0) <= vga_b(0);
+-- tmds_d_p(0) <= vga_b(1);
+-- tmds_d_n(1) <= vga_g(0);
+-- tmds_d_p(1) <= vga_g(1);
+-- tmds_d_n(2) <= vga_r(0);
+-- tmds_d_p(2) <= vga_r(1);
 
 
 -- ###################################
