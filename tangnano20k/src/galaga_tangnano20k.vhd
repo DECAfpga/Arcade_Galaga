@@ -312,7 +312,7 @@ scandoubler_inst :  scandoubler
 
 
 -- RGB
--- adapt video to 2 bits/color only and blank
+-- adapt video to 3 bits/color only and blank
 vga_r_c <= r        when blankn = '1' else "000";
 vga_g_c <= g        when blankn = '1' else "000";
 vga_b_c <= b & b(1) when blankn = '1' else "000";
@@ -339,7 +339,9 @@ begin
 			else
         --VGA
         -- adapt video to 2 bits/color only
-        vga_r  <= vga_r_o (5 downto 3);     -- (5 downto 4) outputs black screen !! why ??
+            -- (4 downto 3) works but (5 downto 4) outputs black screen !! why ??
+        -- adapt video to 3 bits/color only
+        vga_r  <= vga_r_o (5 downto 3);     
         vga_g  <= vga_g_o (5 downto 3);
         vga_b  <= vga_b_o (5 downto 3);
         vga_hs <= hsync_o;       
@@ -401,6 +403,12 @@ JOYX_SEL_O <= '1';  --not needed. core uses 1 button only
 left_i   <= not joyPCFRLDU(2) and JOY1_LEFT;  -- left
 right_i  <= not joyPCFRLDU(3) and JOY1_RIGHT; -- right
 fire_i   <= not joyPCFRLDU(4) and JOY1_B1_P6; -- space
+
+-- CORE IS NOT STABLE. DOES WEIRD THINGS. 
+-- WITH FOLLOWING VIDEO OUTPUT DISAPPEARS
+-- left_i   <= joyPCFRLDU(2); -- left
+-- right_i  <= joyPCFRLDU(3); -- right
+-- fire_i   <= joyPCFRLDU(4); -- space
 
 -- pwm sound output
 process(clock_18)
