@@ -79,16 +79,16 @@ port(
   joystick_clk2   : out std_logic;
   joystick_mosi2  : out std_logic;
   joystick_miso2  : in  std_logic;
-  joystick_cs2    : out std_logic;
+  joystick_cs2    : out std_logic
 
   -- JOYSTICK
-  JOY1_B2_P9		: IN    STD_LOGIC;
-  JOY1_B1_P6		: IN    STD_LOGIC;
-  JOY1_UP		    : IN    STD_LOGIC;
-  JOY1_DOWN		  : IN    STD_LOGIC;
-  JOY1_LEFT	  	: IN    STD_LOGIC;
-  JOY1_RIGHT		: IN    STD_LOGIC;
-  JOYX_SEL_O		: OUT   STD_LOGIC := '1'     
+  -- JOY1_B2_P9		: IN    STD_LOGIC;
+  -- JOY1_B1_P6		: IN    STD_LOGIC;
+  -- JOY1_UP		    : IN    STD_LOGIC;
+  -- JOY1_DOWN		  : IN    STD_LOGIC;
+  -- JOY1_LEFT	  	: IN    STD_LOGIC;
+  -- JOY1_RIGHT		: IN    STD_LOGIC;
+  -- JOYX_SEL_O		: OUT   STD_LOGIC := '1'     
   
   -- -- AUDIO CODEC 
   -- i2sMck : out std_logic;
@@ -204,6 +204,16 @@ signal resetn_clkdiv    : std_logic;
   );
   end component;
 
+  -- Dualshock controller
+  signal sclk       : std_logic;          -- controller main clock at 250Khz
+  signal sclk_cnt   : std_logic_vector(6 downto 0);         -- 36200000 / 250_000 / 2 = 72
+
+  type   t_joy is array (0 to 1) of std_logic_vector(7 downto 0);
+  signal joy_rx2           : t_joy;
+  signal auto_square2      : std_logic := '0';   
+  signal auto_triangle2    : std_logic := '0';
+  signal nes_btn2          : std_logic_vector(7 downto 0);
+
   signal slot       : std_logic_vector(2 downto 0) := (others => '0');
 
 begin
@@ -273,13 +283,20 @@ port map(
  
  b_test       => '1',
  b_svce       => '1', 
- coin         => fn_pulse(2), -- F3
- start1       => fn_pulse(3), -- F1
- start2       => fn_pulse(4), -- F2
+--  coin         => fn_pulse(2), -- F3
+--  start1       => fn_pulse(3), -- F1
+--  start2       => fn_pulse(4), -- F2
+ coin         =>  joy_rx2(0)(3), -- F3
+ start1       =>  joy_rx2(0)(0), -- F1
+ start2       =>  joy_rx2(0)(2), -- F2
 
- left1        => not left_i,   --joyPCFRLDU(2),
- right1       => not right_i,  --joyPCFRLDU(3),
- fire1        => not fire_i,   --joyPCFRLDU(4),
+--  left1        => not left_i,   --joyPCFRLDU(2),
+--  right1       => not right_i,  --joyPCFRLDU(3),
+--  fire1        => not fire_i,   --joyPCFRLDU(4),
+
+ left1        => left_i,   --joyPCFRLDU(2),
+ right1       => right_i,  --joyPCFRLDU(3),
+ fire1        => fire_i,   --joyPCFRLDU(4),
 
  left2        => joyPCFRLDU(2),
  right2       => joyPCFRLDU(3),
@@ -341,9 +358,12 @@ begin
         -- adapt video to 2 bits/color only
             -- (4 downto 3) works but (5 downto 4) outputs black screen !! why ??
         -- adapt video to 3 bits/color only
-        vga_r  <= vga_r_o (5 downto 3);     
-        vga_g  <= vga_g_o (5 downto 3);
-        vga_b  <= vga_b_o (5 downto 3);
+        vga_r  <= vga_r_o (4 downto 2);     
+        vga_g  <= vga_g_o (4 downto 2);
+        vga_b  <= vga_b_o (4 downto 2);
+        -- vga_r  <= vga_r_o (5 downto 3);     
+        -- vga_g  <= vga_g_o (5 downto 3);
+        -- vga_b  <= vga_b_o (5 downto 3);        
         vga_hs <= hsync_o;       
         vga_vs <= vsync_o; 	    	
 			end if;
@@ -386,23 +406,59 @@ port map (
 
 
 
--- dualshock_controller controller2 (
---     .I_CLK250K(sclk), .I_RSTn(1'b1),
---     .O_psCLK(joystick_clk2), .O_psSEL(joystick_cs2), .O_psTXD(joystick_mosi2),
---     .I_psRXD(joystick_miso2),
---     .O_RXD_1(joy_rx2[0]), .O_RXD_2(joy_rx2[1]), 
---     .O_RXD_3(), .O_RXD_4(), .O_RXD_5(), .O_RXD_6(),
---     .I_CONF_SW(1'b0), .I_MODE_SW(1'b1), .I_MODE_EN(1'b0),
---     .I_VIB_SW(2'b00), .I_VIB_DAT(8'hff)     // no vibration
--- );
+-- Dualshock controller
 
+-- Generate sclk
+process(clock_36)
+begin
+  if rising_edge(clock_36) then
+      sclk_cnt     <= sclk_cnt + 1;
+      if (sclk_cnt  = 71) then     -- 36200000 / 250_000 / 2 = 72
+          sclk     <= not sclk;
+          sclk_cnt <= "0000000";
+      end if;
+  end if;
+end process;
+
+controller2 : entity work.dualshock_controller
+port map (
+    I_CLK250K => (sclk), 
+    I_RSTn    => ('1'),
+    O_psCLK   => (joystick_clk2), 
+    O_psSEL   => (joystick_cs2), 
+    O_psTXD   => (joystick_mosi2),
+    I_psRXD   => (joystick_miso2),
+    O_RXD_1   => (joy_rx2(0)), 
+    O_RXD_2   => (joy_rx2(1)), 
+    --O_RXD_3   => (),  O_RXD_4 => (), O_RXD_5 => (), O_RXD_6 => (),
+    I_CONF_SW => ('0'),  I_MODE_SW => ('1'), I_MODE_EN => ('0'),
+    I_VIB_SW  => ("00"), I_VIB_DAT => ("11111111")     -- no vibration
+);
+
+
+-- joy_rx[0:1] dualshock buttons: 0:(L D R U St R3 L3 Se)  1:(□ X O △ R1 L1 R2 L2)
+-- nes_btn[0:1] NES buttons:      (R L D U START SELECT B A)
+-- O is A, X is B
+
+nes_btn2(7) <= not joy_rx2(0)(5);
+nes_btn2(6) <= not joy_rx2(0)(7);
+nes_btn2(5) <= not joy_rx2(0)(6);
+nes_btn2(4) <= not joy_rx2(0)(4);
+nes_btn2(3) <= not joy_rx2(0)(3);
+nes_btn2(2) <= not joy_rx2(0)(0);
+nes_btn2(1) <= not joy_rx2(1)(6) or auto_square2;
+nes_btn2(0) <= not joy_rx2(1)(5) or auto_triangle2;
+
+left_i   <= nes_btn2(6);  -- left
+right_i  <= nes_btn2(7); -- right
+fire_i   <= nes_btn2(0); -- space
 
 --Sega megadrive gamepad
-JOYX_SEL_O <= '1';  --not needed. core uses 1 button only
+-- JOYX_SEL_O <= '1';  --not needed. core uses 1 button only
 
-left_i   <= not joyPCFRLDU(2) and JOY1_LEFT;  -- left
-right_i  <= not joyPCFRLDU(3) and JOY1_RIGHT; -- right
-fire_i   <= not joyPCFRLDU(4) and JOY1_B1_P6; -- space
+-- left_i   <= not joyPCFRLDU(2) and JOY1_LEFT;  -- left
+-- right_i  <= not joyPCFRLDU(3) and JOY1_RIGHT; -- right
+-- fire_i   <= not joyPCFRLDU(4) and JOY1_B1_P6; -- space
 
 -- CORE IS NOT STABLE. DOES WEIRD THINGS. 
 -- WITH FOLLOWING VIDEO OUTPUT DISAPPEARS
