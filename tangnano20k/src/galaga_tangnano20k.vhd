@@ -80,15 +80,6 @@ port(
   joystick_mosi2  : out std_logic;
   joystick_miso2  : in  std_logic;
   joystick_cs2    : out std_logic
-
-  -- JOYSTICK
-  -- JOY1_B2_P9		: IN    STD_LOGIC;
-  -- JOY1_B1_P6		: IN    STD_LOGIC;
-  -- JOY1_UP		    : IN    STD_LOGIC;
-  -- JOY1_DOWN		  : IN    STD_LOGIC;
-  -- JOY1_LEFT	  	: IN    STD_LOGIC;
-  -- JOY1_RIGHT		: IN    STD_LOGIC;
-  -- JOYX_SEL_O		: OUT   STD_LOGIC := '1'     
   
   -- -- AUDIO CODEC 
   -- i2sMck : out std_logic;
@@ -169,9 +160,11 @@ signal resetn_clkdiv    : std_logic;
 -- joy signals
  signal left_i          : std_logic; 
  signal right_i         : std_logic; 
- signal up_i            : std_logic;
- signal down_i          : std_logic;
  signal fire_i          : std_logic;
+
+ signal coin_i            : std_logic;
+ signal start1_i          : std_logic;
+ signal start2_i          : std_logic;
 
   -- signals for I2S output    
   signal I2S_SCLK         : std_logic;   
@@ -242,7 +235,8 @@ reset <= SW1;
 
 resetn_clkdiv <= (not reset) and pll_lock;
 
-clock_36 <= SYS_CLK;    -- with 5351 exact clock set to pll_clk O1=36200K -s
+-- with 5351 exact clock set to pll_clk O1=36200K -s
+clock_36 <= SYS_CLK;   
 
 process (clock_36)
 begin
@@ -283,16 +277,13 @@ port map(
  
  b_test       => '1',
  b_svce       => '1', 
---  coin         => fn_pulse(2), -- F3
---  start1       => fn_pulse(3), -- F1
---  start2       => fn_pulse(4), -- F2
- coin         =>  joy_rx2(0)(3), -- F3
- start1       =>  joy_rx2(0)(0), -- F1
- start2       =>  joy_rx2(0)(2), -- F2
+--coin         => fn_pulse(2), -- F3
+--start1       => fn_pulse(3), -- F1
+--start2       => fn_pulse(4), -- F2
 
---  left1        => not left_i,   --joyPCFRLDU(2),
---  right1       => not right_i,  --joyPCFRLDU(3),
---  fire1        => not fire_i,   --joyPCFRLDU(4),
+ coin         => coin_i,   -- 
+ start1       => start1_i, -- 
+ start2       => start2_i, -- 
 
  left1        => left_i,   --joyPCFRLDU(2),
  right1       => right_i,  --joyPCFRLDU(3),
@@ -449,9 +440,22 @@ nes_btn2(2) <= not joy_rx2(0)(0);
 nes_btn2(1) <= not joy_rx2(1)(6) or auto_square2;
 nes_btn2(0) <= not joy_rx2(1)(5) or auto_triangle2;
 
-left_i   <= nes_btn2(6);  -- left
-right_i  <= nes_btn2(7); -- right
-fire_i   <= nes_btn2(0); -- space
+-- left_i   <= nes_btn2(6);  -- left
+-- right_i  <= nes_btn2(7); -- right
+-- fire_i   <= nes_btn2(0); -- space
+
+coin_i     <=  nes_btn2(3);   -- start
+start1_i   <=  joy_rx2(0)(1); --  
+start2_i   <=  joy_rx2(0)(2); -- 
+
+left_i   <= joyPCFRLDU(2) or nes_btn2(6); -- left
+right_i  <= joyPCFRLDU(3) or nes_btn2(7); -- right
+fire_i   <= joyPCFRLDU(4) or nes_btn2(0); -- space
+
+-- coin_i     <= fn_pulse(2) or nes_btn2(3);   -- F3
+-- start1_i   <= fn_pulse(3) or joy_rx2(0)(1); -- F5
+-- start2_i   <= fn_pulse(4) or joy_rx2(0)(2); -- F4
+
 
 --Sega megadrive gamepad
 -- JOYX_SEL_O <= '1';  --not needed. core uses 1 button only

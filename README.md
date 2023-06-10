@@ -1,6 +1,6 @@
 # Galaga ports 
 
-Various ports for Galaga by Somhic  adapted from DE10_lite port by Dar (https://sourceforge.net/projects/darfpga/files/Software%20VHDL/galaga/)
+Various ports for Galaga by Somhi  adapted from DE10_lite port by Dar (https://sourceforge.net/projects/darfpga/files/Software%20VHDL/galaga/)
 
 [Read history of Galaga Arcade.](https://www.arcade-museum.com/game_detail.php?game_id=7881)
 
