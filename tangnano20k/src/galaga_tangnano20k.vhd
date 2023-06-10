@@ -454,68 +454,68 @@ pwm_audio_out_r <= pwm_accumulator(12);
 -- HDMI_LRCLK <= I2S_LRCLK;   -- 27,96 kHz              -no-  14 kHz  music with noise
 -- HDMI_I2S(0) <= tx_data;
 
+-- ###################################
 
+-- -- HDMI output.
+-- hdmi_inst : entity work.hdmi
+--   generic map (
+--     VIDEO_ID_CODE => 1,
+--     IT_CONTENT => 1,
+--     DVI_OUTPUT => 1,
+--     -- VIDEO_REFRESH_RATE => 59.94,
+--     AUDIO_RATE => 48000,
+--     -- AUDIO_BIT_WIDTH => 16,
+--     START_X => 0,
+--     START_Y => 0
+--   )
+--   port map (
+--     clk_pixel_x5 => clk_p5,   -- clk_pixel_x5
+--     clk_pixel => clk_p,       -- clock_12
+--     clk_audio => clock_18,
+--     reset => reset,
+--     rgb => rgb,
+--     audio_sample_word => audio_sample_word,
+--     tmds => tmds
+--     -- tmds_clock => tmds_clock,
+--     -- cx => cx,
+--     -- cy => cy,
+--     -- frame_width => frame_width,
+--     -- frame_height => frame_height
+--   );
 
--- HDMI output.
-hdmi_inst : entity work.hdmi
-  generic map (
-    VIDEO_ID_CODE => 1,
-    IT_CONTENT => 1,
-    DVI_OUTPUT => 1,
-    -- VIDEO_REFRESH_RATE => 59.94,
-    AUDIO_RATE => 48000,
-    -- AUDIO_BIT_WIDTH => 16,
-    START_X => 0,
-    START_Y => 0
-  )
-  port map (
-    clk_pixel_x5 => clk_p5,   -- clk_pixel_x5
-    clk_pixel => clk_p,       -- clock_12
-    clk_audio => clock_18,
-    reset => reset,
-    rgb => rgb,
-    audio_sample_word => audio_sample_word,
-    tmds => tmds
-    -- tmds_clock => tmds_clock,
-    -- cx => cx,
-    -- cy => cy,
-    -- frame_width => frame_width,
-    -- frame_height => frame_height
-  );
+-- audio_sample_word(0) <= "000" & audio & "000";
+-- audio_sample_word(1) <= "000" & audio & "000";
 
-audio_sample_word(0) <= "000" & audio & "000";
-audio_sample_word(0) <= "000" & audio & "000";
+-- rgb <= vga_r_i&vga_r_i(5 downto 4)&vga_g_i&vga_g_i(5 downto 4)&vga_b_i&vga_b_i(5 downto 4);
 
-rgb <= vga_r_i&vga_r_i(5 downto 4)&vga_g_i&vga_g_i(5 downto 4)&vga_b_i&vga_b_i(5 downto 4);
+-- -- Gowin LVDS output buffer
+-- tmds_bufds_0 : entity work.ELVDS_OBUF 
+-- port map (
+--     I   => (clk_p     ),
+--     O   => (tmds_clk_p),
+--     OB  => (tmds_clk_n)
+-- );
 
--- Gowin LVDS output buffer
-tmds_bufds_0 : entity work.ELVDS_OBUF 
-port map (
-    I   => (clk_p     ),
-    O   => (tmds_clk_p),
-    OB  => (tmds_clk_n)
-);
+-- tmds_bufds_1 : entity work.ELVDS_OBUF 
+-- port map (
+--     I   => (tmds(2)    ),
+--     O   => (tmds_d_p(2)),
+--     OB  => (tmds_d_n(2))
+-- );
 
-tmds_bufds_1 : entity work.ELVDS_OBUF 
-port map (
-    I   => (tmds(2)    ),
-    O   => (tmds_d_p(2)),
-    OB  => (tmds_d_n(2))
-);
+-- tmds_bufds_2 : entity work.ELVDS_OBUF 
+-- port map (
+--     I   => (tmds(1)    ),
+--     O   => (tmds_d_p(1)),
+--     OB  => (tmds_d_n(1))
+-- );
 
-tmds_bufds_2 : entity work.ELVDS_OBUF 
-port map (
-    I   => (tmds(1)    ),
-    O   => (tmds_d_p(1)),
-    OB  => (tmds_d_n(1))
-);
-
-tmds_bufds_3 : entity work.ELVDS_OBUF 
-port map (
-    I   => (tmds(0)    ),
-    O   => (tmds_d_p(0)),
-    OB  => (tmds_d_n(0))
-);
+-- tmds_bufds_3 : entity work.ELVDS_OBUF 
+-- port map (
+--     I   => (tmds(0)    ),
+--     O   => (tmds_d_p(0)),
+--     OB  => (tmds_d_n(0))
+-- );
 
 
 -- I2S interface audio
