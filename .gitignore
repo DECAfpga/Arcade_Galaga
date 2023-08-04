@@ -9,6 +9,7 @@ output_files
 *.sim
 *.ip_user_files
 *.srcs
-impl
-#ignorar fitxers ja trackejats $ git rm --cached clean.sh 
-#https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring
+gwsynthesis
+pnr
+temp
+*.gprj.user
